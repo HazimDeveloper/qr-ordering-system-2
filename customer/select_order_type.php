@@ -7,7 +7,7 @@ if (!isLoggedIn()) {
 
 if ($_POST && isset($_POST['order_type'])) {
     $_SESSION['order_type'] = $_POST['order_type'];
-    redirect('menu.php');
+    redirect('guest_menu.php');
 }
 
 include '../includes/header.php';

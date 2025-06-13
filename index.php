@@ -17,13 +17,13 @@ include 'includes/header.php';
             </a>
         </div>
         <div style="margin: 20px 0;">
-            <a href="customer/menu.php" class="btn btn-secondary">Order Food</a>
+            <a href="customer/guest_menu.php" class="btn btn-secondary">Order Food</a>
             <a href="customer/book_table_enhanced.php" class="btn btn-secondary">Book Table</a>
         </div>
     <?php else: ?>
         <div style="margin: 30px 0;">
             <a href="qr/scan.php" class="btn" style="font-size: 20px; padding: 15px 30px; margin-right: 10px;">
-                Scan QR & Order
+                Order Now
             </a>
             <a href="auth/login.php" class="btn" style="font-size: 20px; padding: 15px 30px;">
                 Login / Register
@@ -38,7 +38,7 @@ include 'includes/header.php';
         <div style="text-align: center;">
             <div style="font-size: 48px; margin-bottom: 15px;">📱</div>
             <h3>1. Scan QR Code</h3>
-            <p>Scan the QR code at your table to get started. Your table number is automatically detected.</p>
+            <p>Scan the QR code at your table to get started.</p>
         </div>
         <div style="text-align: center;">
             <div style="font-size: 48px; margin-bottom: 15px;">🍽️</div>

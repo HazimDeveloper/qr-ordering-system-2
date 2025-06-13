@@ -107,9 +107,9 @@ include '../includes/header.php';
                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
             </div>
             
-            <button type="submit" name="generate_qr" class="btn" style="width: 100%; margin-top: 20px;">
+            <!-- <button type="submit" name="generate_qr" class="btn" style="width: 100%; margin-top: 20px;">
                 🔳 Generate QR Code
-            </button>
+            </button> -->
         </form>
     </div>
 </div>

@@ -37,12 +37,12 @@ if ($_POST) {
         }
         
         try {
-            // Insert booking into database
+            // Insert booking into database with PENDING status (awaiting staff approval)
             $stmt = $pdo->prepare("
                 INSERT INTO table_bookings (
                     booking_id, user_id, table_number, booking_date, booking_time, 
                     guests, event_type, package, package_price, special_requests, status
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'confirmed')
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
             ");
             
             $result = $stmt->execute([
@@ -51,7 +51,7 @@ if ($_POST) {
             ]);
             
             if ($result) {
-                $message = "Table booking confirmed! Your booking ID is <strong>$booking_id</strong>";
+                $message = "Table booking request submitted! Your booking ID is <strong>$booking_id</strong><br><small style='color: #f39c12;'>⏳ Awaiting staff approval - you will be notified once confirmed</small>";
             } else {
                 $error = 'Failed to save booking. Please try again.';
             }
@@ -77,14 +77,20 @@ include '../includes/header.php';
     <div class="alert alert-success"><?php echo $message; ?></div>
     
     <?php if ($booking_id): ?>
-        <!-- Booking Confirmation Receipt -->
+        <!-- Booking Request Receipt -->
         <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); padding: 30px; margin: 30px 0; max-width: 600px; margin-left: auto; margin-right: auto;">
-            <h2 style="text-align: center; margin-bottom: 25px; color: #27ae60;">✅ Booking Confirmed</h2>
+            <h2 style="text-align: center; margin-bottom: 25px; color: #f39c12;">⏳ Booking Request Submitted</h2>
             
-            <div style="border: 2px dashed #27ae60; padding: 25px; margin-bottom: 25px; border-radius: 8px;">
+            <div style="border: 2px dashed #f39c12; padding: 25px; margin-bottom: 25px; border-radius: 8px; background: #fef9e7;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="background: #f39c12; color: white; padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: bold; font-size: 14px;">
+                        📋 PENDING STAFF APPROVAL
+                    </div>
+                </div>
+                
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                     <div><strong>Booking ID:</strong></div>
-                    <div style="color: #27ae60; font-weight: bold;"><?php echo $booking_id; ?></div>
+                    <div style="color: #f39c12; font-weight: bold;"><?php echo $booking_id; ?></div>
                     
                     <div><strong>Customer:</strong></div>
                     <div><?php echo htmlspecialchars($_SESSION['username']); ?></div>
@@ -97,6 +103,9 @@ include '../includes/header.php';
                     
                     <div><strong>Number of Guests:</strong></div>
                     <div><?php echo $_POST['guests']; ?> person(s)</div>
+                    
+                    <div><strong>Status:</strong></div>
+                    <div style="color: #f39c12; font-weight: bold;">⏳ Awaiting Approval</div>
                 </div>
                 
                 <?php if (!empty($_POST['event_type'])): ?>
@@ -136,9 +145,24 @@ include '../includes/header.php';
                 <?php endif; ?>
             </div>
             
+            <!-- Important Notice -->
+            <div style="background: linear-gradient(135deg, #e8f4f8 0%, #d4e6f1 100%); padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #3498db;">
+                <h4 style="margin: 0 0 15px 0; color: #2980b9;">📢 Important Notice</h4>
+                <ul style="margin: 0; padding-left: 20px; color: #2c3e50; line-height: 1.6;">
+                    <li><strong>Your booking is pending staff approval</strong></li>
+                    <li>You will receive notification once confirmed or if any issues arise</li>
+                    <li>Our staff will review your request within 24 hours</li>
+                    <li>Keep your Booking ID <strong><?php echo $booking_id; ?></strong> for reference</li>
+                    <?php if (!empty($_POST['package'])): ?>
+                        <li>Package payment will be collected at the restaurant upon arrival</li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+            
             <div style="text-align: center;">
-                <button onclick="window.print()" class="btn">🖨️ Print Confirmation</button>
-                <a href="../index.php" class="btn btn-secondary" style="margin-left: 10px;">🏠 Back to Home</a>
+                <button onclick="window.print()" class="btn btn-secondary">🖨️ Print Booking Request</button>
+                <a href="../index.php" class="btn" style="margin-left: 10px;">🏠 Back to Home</a>
+                <a href="my_bookings.php" class="btn btn-secondary" style="margin-left: 10px;">📋 Check Booking Status</a>
             </div>
         </div>
     <?php endif; ?>
@@ -155,9 +179,8 @@ include '../includes/header.php';
                 <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <!-- Sample Image -->
                     <div style="height: 120px; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
-                        🎈🎂
+                        <img src="../images/package_a.png" width="150px" alt="">
                     </div>
-                    
                     <h4 style="color: #3498db; margin-bottom: 15px;">📦 Package A - <span style="font-size: 24px; font-weight: bold;">RM 60</span></h4>
                     <div style="color: #666; font-size: 14px; margin-bottom: 10px;">Perfect for intimate gatherings</div>
                     <ul style="margin: 10px 0; padding-left: 20px; color: #333;">
@@ -176,7 +199,7 @@ include '../includes/header.php';
                 <div style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #e67e22; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <!-- Sample Image -->
                     <div style="height: 120px; background: linear-gradient(135deg, #fff3e0 0%, #ffcc02 100%); border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
-                        ✨🎉
+                        <img src="../images/package_b.png" width="150px" alt="">
                     </div>
                     
                     <h4 style="color: #e67e22; margin-bottom: 15px;">🎁 Package B - <span style="font-size: 24px; font-weight: bold;">RM 75</span></h4>
@@ -195,6 +218,17 @@ include '../includes/header.php';
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Important Notice for Booking Process -->
+        <div style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #f39c12;">
+            <h4 style="margin: 0 0 15px 0; color: #856404;">⚠️ Booking Process Notice</h4>
+            <ul style="margin: 0; padding-left: 20px; color: #856404; line-height: 1.6;">
+                <li><strong>All bookings require staff approval</strong></li>
+                <li>You will receive confirmation within 24 hours</li>
+                <li>Please ensure all details are correct before submitting</li>
+                <li>For urgent bookings, please call the restaurant directly</li>
+            </ul>
         </div>
         
         <!-- Booking Form -->
@@ -307,8 +341,11 @@ include '../includes/header.php';
             <!-- Submit Button -->
             <div style="text-align: center;">
                 <button type="submit" class="btn" style="padding: 15px 40px; font-size: 16px;">
-                    ✅ Confirm Booking
+                    📋 Submit Booking Request
                 </button>
+                <p style="margin: 15px 0 0 0; font-size: 13px; color: #666; font-style: italic;">
+                    ⏳ Your booking will be reviewed by our staff within 24 hours
+                </p>
             </div>
         </form>
         
@@ -326,7 +363,7 @@ include '../includes/header.php';
                     <li style="margin-bottom: 8px;">👥 Large groups (25+): Call directly</li>
                     <li style="margin-bottom: 8px;">🎉 Event packages: 3 days advance booking</li>
                     <li style="margin-bottom: 8px;">💰 Package payment: At the restaurant</li>
-                    <li style="margin-bottom: 8px;">📞 Questions: Contact our staff</li>
+                    <li style="margin-bottom: 8px;">⏳ Approval: Within 24 hours</li>
                 </ul>
             </div>
         </div>

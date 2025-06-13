@@ -38,7 +38,7 @@
                 
                 <?php if (isLoggedIn()): ?>
                     <!-- Customer Links -->
-                    <li><a href="/qr-food-ordering/customer/menu.php">📋 Menu</a></li>
+                    <li><a href="/qr-food-ordering/customer/guest_menu.php">📋 Menu</a></li>
                     
                     <!-- Cart with count -->
                     <?php
@@ -61,7 +61,8 @@
                     </li>
                     
                     <li><a href="/qr-food-ordering/customer/order_history.php">📜 Orders</a></li>
-                    <li><a href="/qr-food-ordering/customer/book_table_enhanced.php">📅 Book Table</a></li>
+                    <li><a href="/qr-food-ordering/customer/my_bookings.php">📅 My Bookings</a></li>
+                    <li><a href="/qr-food-ordering/customer/book_table_enhanced.php">🎉 Book Table</a></li>
                     
                     <!-- Staff-only Links -->
                     <?php if (isStaff()): ?>
@@ -71,6 +72,7 @@
                                 <a href="/qr-food-ordering/staff/dashboard.php">📊 Dashboard</a>
                                 <a href="/qr-food-ordering/staff/manage_orders.php">📋 Manage Orders</a>
                                 <a href="/qr-food-ordering/staff/manage_items.php">🍽️ Manage Items</a>
+                                <a href="/qr-food-ordering/staff/manage_bookings.php">📅 Manage Bookings</a>
                                 <a href="/qr-food-ordering/staff/generate.php">🔳 QR Codes</a>
                             </div>
                         </li>
@@ -95,7 +97,7 @@
                     
                 <?php else: ?>
                     <!-- Guest Links -->
-                    <li><a href="/qr-food-ordering/customer/menu.php">📋 Menu</a></li>
+                    <li><a href="/qr-food-ordering/customer/guest_menu.php">📋 Menu</a></li>
                     <li><a href="/qr-food-ordering/auth/login.php">🔑 Login</a></li>
                     <li><a href="/qr-food-ordering/auth/register.php">📝 Register</a></li>
                 <?php endif; ?>
@@ -359,7 +361,7 @@ document.addEventListener('keydown', function(e) {
     // Alt + M for menu
     if (e.altKey && e.key === 'm') {
         e.preventDefault();
-        window.location.href = '/qr-food-ordering/customer/menu.php';
+        window.location.href = '/qr-food-ordering/customer/guest_menu.php';
     }
     
     // Alt + C for cart

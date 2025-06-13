@@ -654,19 +654,6 @@ function toggleAutoRefresh() {
     }
 }
 
-// Add auto-refresh button on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const buttonContainer = document.querySelector('div[style*="text-align: center; margin: 30px 0;"]');
-    if (buttonContainer) {
-        const autoRefreshBtn = document.createElement('button');
-        autoRefreshBtn.id = 'auto-refresh-btn';
-        autoRefreshBtn.className = 'btn btn-secondary';
-        autoRefreshBtn.textContent = 'Enable Auto-Refresh';
-        autoRefreshBtn.onclick = toggleAutoRefresh;
-        autoRefreshBtn.style.marginLeft = '10px';
-        buttonContainer.appendChild(autoRefreshBtn);
-    }
-});
 
 // Status color coding for better visual feedback
 document.addEventListener('DOMContentLoaded', function() {
